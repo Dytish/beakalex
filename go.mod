@@ -1,4 +1,4 @@
-module beak
+module beakalex
 
 go 1.18
 

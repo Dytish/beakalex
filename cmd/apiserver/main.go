@@ -1,10 +1,9 @@
 package main
 
 import (
-	"beak/internal/handlers/bot"
-	"beak/internal/handlers/user"
-	"beak/pkg/dataBase"
-	"beak/pkg/middleware"
+	"beakalex/internal/handlers/worker"
+	"beakalex/pkg/dataBase"
+	"beakalex/pkg/middleware"
 	"fmt"
 	"log"
 
@@ -12,9 +11,8 @@ import (
 )
 
 const (
-	port    = "8086" // todo: Не нужно указывать перед портом двоеточие. Лучше используй конкатенацию строк типа: HOST+ ":" +PORT
-	apiUser = "/api/user"
-	apiBot  = "/api/constructor"
+	port      = "8089" // todo: Не нужно указывать перед портом двоеточие. Лучше используй конкатенацию строк типа: HOST+ ":" +PORT
+	apiWorker = "/api/worker"
 )
 
 func main() {
@@ -24,13 +22,9 @@ func main() {
 
 	router.Use(mw.CORSMiddleware)
 
-	v1Group := router.Group(apiUser)
-	userController := user.NewHandler(db)
+	v1Group := router.Group(apiWorker)
+	userController := worker.NewHandler(db)
 	userController.Register(v1Group)
-
-	v2Group := router.Group(apiBot)
-	botController := bot.NewHandler(db)
-	botController.Register(v2Group)
 
 	fmt.Println("\n" + "Start server...")
 	log.Fatalf("Can't start app: %v", router.Run(":"+port))

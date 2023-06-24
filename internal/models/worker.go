@@ -1,17 +1,16 @@
 package models
 
 import (
-	"encoding/json"
 	// "fmt"
 	"time"
 )
 
 const (
-	// TODO: уточнить
+// TODO: уточнить
 
 )
 
-type User struct {
+type Worker struct {
 	ID        uint `json:"id" gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -28,18 +27,18 @@ type UserViewDTO struct {
 	Login string `json:"login"`
 }
 
-func (u *User) Convert() (UserViewDTO, error) {
+// func (u *User) Convert() (UserViewDTO, error) {
 
-	jsonModel, err := json.Marshal(u)
-	if err != nil {
-		return UserViewDTO{}, err
-	}
+// 	jsonModel, err := json.Marshal(u)
+// 	if err != nil {
+// 		return UserViewDTO{}, err
+// 	}
 
-	var userDTO UserViewDTO
-	dErr := json.Unmarshal(jsonModel, &userDTO)
-	if dErr != nil {
-		return UserViewDTO{}, dErr
-	}
+// 	var userDTO UserViewDTO
+// 	dErr := json.Unmarshal(jsonModel, &userDTO)
+// 	if dErr != nil {
+// 		return UserViewDTO{}, dErr
+// 	}
 
-	return userDTO, nil
-}
+// 	return userDTO, nil
+// }

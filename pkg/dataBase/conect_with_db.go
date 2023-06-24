@@ -1,7 +1,7 @@
 package dataBase
 
 import (
-	"beak/pkg/config"
+	"beakalex/pkg/config"
 	"fmt"
 
 	"github.com/jinzhu/gorm"

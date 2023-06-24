@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"beak/internal/models"
+	"beakalex/internal/models"
 	"net/http"
 
 	jwt "github.com/appleboy/gin-jwt/v2"
@@ -42,7 +42,7 @@ func (mwS *MiddlewareStorage) JwtMiddleware(conn *gorm.DB) *jwt.GinJWTMiddleware
 		},
 
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*models.User); ok {
+			if v, ok := data.(*models.Worker); ok {
 				return jwt.MapClaims{
 					IdentityJWTKey: v.ID,
 				}
@@ -54,11 +54,11 @@ func (mwS *MiddlewareStorage) JwtMiddleware(conn *gorm.DB) *jwt.GinJWTMiddleware
 		IdentityHandler: func(c *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(c)
 			if v, ok := claims[IdentityJWTKey].(float64); ok {
-				return &models.User{
+				return &models.Worker{
 					ID: uint(v),
 				}
 			}
-			return &models.User{
+			return &models.Worker{
 				ID: 0,
 			}
 		},
@@ -73,8 +73,8 @@ func (mwS *MiddlewareStorage) JwtMiddleware(conn *gorm.DB) *jwt.GinJWTMiddleware
 				return "", jwt.ErrMissingLoginValues
 			}
 
-			var userModel models.User
-			conn.Where(models.User{Login: credentials.Login}).First(&userModel)
+			var userModel models.Worker
+			conn.Where(models.Worker{Login: credentials.Login}).First(&userModel)
 			if userModel.ID == 0 {
 				return "", jwt.ErrFailedAuthentication
 			}
@@ -85,7 +85,7 @@ func (mwS *MiddlewareStorage) JwtMiddleware(conn *gorm.DB) *jwt.GinJWTMiddleware
 			return &userModel, nil
 		},
 		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if _, ok := data.(*models.User); ok {
+			if _, ok := data.(*models.Worker); ok {
 				return true
 			}
 			return false
